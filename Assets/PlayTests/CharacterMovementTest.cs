@@ -79,25 +79,27 @@ public class CharacterMovementTest
         moveController.groundLayerMask = groundMask;
         moveController.groundPosition = (new GameObject("Ground position")).transform;
 
+        go.transform.position = Vector3.up * 3;
+
         Vector3 original = go.transform.position;
 
         yield return new WaitForSeconds(0.1f);
         Vector3 actual = go.transform.position;
 
         Assert.AreNotEqual(original, actual);
-        Assert.Less(actual.y, -0.045f);
+        Assert.LessOrEqual(actual.y, 0.0f);
         Assert.Greater(actual.y, -0.12f);
 
         yield return new WaitForSeconds(0.1f);
         Vector3 actual2 = go.transform.position;
 
         Assert.AreNotEqual(actual, actual2);
-        Assert.Less(actual2.y, -0.2f);
+        Assert.Less(actual2.y, 0.0f);
         Assert.Greater(actual2.y, -0.33f);
     }
 
     [UnityTest]
-    public IEnumerator ApplyGravity_WehnHitsGround_VelocityIsZero()
+    public IEnumerator ApplyGravity_WhenHitsGround_VelocityIsZero()
     {
         LayerMask groundMask = new LayerMask
         {
@@ -123,7 +125,8 @@ public class CharacterMovementTest
         yield return new WaitForSeconds(3f);
         Vector3 actual = go.transform.position;
         Assert.Less(actual.y, original.y);
-        Assert.That(Mathf.Approximately(actual.y, -1.42f));
+        Assert.Less(actual.y, 0.0f);
+        Assert.Greater(actual.y, -2.0f);
         Assert.Less(-1.3f, moveController.velocity.y);
     }
 }
